@@ -37,5 +37,19 @@
             return $res;
         }
 
+        public function eliminar(string $sql){
+            $this->sql = $sql;
+            $insert = $this->con->prepare($this->sql);
+            $data=$insert->execute();
+            
+            if ($data) {
+                $res = 1;
+            }
+            else{
+                $res = 0;
+            }
+            return $res;
+        }
+
     }
 ?>

@@ -137,6 +137,43 @@ function btnEditar(id){
     }
 }
 
+function btnEliminar(id){
+    Swal.fire(
+        {
+            title: '¿Estas seguro de eliminar este usuario?',
+            text: "No podrás revertir esto!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, eliminarlo',
+            cancelButtonText: 'Cancelar'
+        }
+    ).then((result) => {
+        if(result.isConfirmed){
+            const http= new XMLHttpRequest();
+            const url= base_url + "Usuarios/eliminar/"+id;
+            http.open("GET",url,true);
+            http.send(); 
+            http.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    console.log(this.responseText);
+                }
+            }
+            tblUsuarios.ajax.reload();
+            Swal.fire(
+                {
+                    title: 'Usuario eliminado correctamente',
+                    icon: 'success',
+                    showConfirmButton: false,
+                    timer: 1500,
+                    position: 'top-end'
+                }
+            );
+        }
+    })
+}
+
 function formUsuario(){
     document.getElementById("tituloModal").innerHTML = "Nuevo Usuario";
     document.getElementById("btnGuardar").innerHTML = "Guardar";

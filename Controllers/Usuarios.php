@@ -23,7 +23,7 @@
 
                 $data[$i]['acciones'] = '<div>
                 <button class="btn btn-primary" onclick="btnEditar('.$data[$i]['id'].')">Editar</button>
-                <button class="btn btn-danger">Eliminar</button>
+                <button class="btn btn-danger" onclick="btnEliminar('.$data[$i]['id'].')">Eliminar</button>
                 </div>';
             }
 
@@ -98,6 +98,12 @@
 
         public function editar($id){
             $data=$this->model->editarUsuario($id);
+            echo json_encode($data,JSON_UNESCAPED_UNICODE);
+            die();
+        }
+
+        public function eliminar($id){
+            $data=$this->model->eliminarUsuario($id);
             echo json_encode($data,JSON_UNESCAPED_UNICODE);
             die();
         }

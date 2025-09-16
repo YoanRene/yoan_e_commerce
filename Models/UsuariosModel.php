@@ -74,6 +74,11 @@
             $sql = "SELECT * FROM usuarios WHERE id = $id";
             return $this->select($sql);
         }
+
+        public function eliminarUsuario(int $id){
+            $sql = "DELETE FROM usuarios WHERE id = $id";
+            return $this->eliminar($sql);
+        }
     }
 
 ?>
