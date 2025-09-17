@@ -1,5 +1,13 @@
 let tblUsuarios;
-document.addEventListener("DOMContentLoaded",function(){
+
+// Function to initialize DataTable when jQuery is ready
+function initializeDataTable() {
+    if (typeof $ === 'undefined' || typeof $.fn.DataTable === 'undefined') {
+        // jQuery or DataTable not loaded yet, wait and try again
+        setTimeout(initializeDataTable, 100);
+        return;
+    }
+    
     tblUsuarios = $("#tblUsuarios").DataTable({
         ajax:{
             url: base_url + "Usuarios/listar",
@@ -14,7 +22,10 @@ document.addEventListener("DOMContentLoaded",function(){
             {data: "acciones"}
         ]
     });
-}); 
+}
+
+// Start the initialization when DOM is ready
+document.addEventListener("DOMContentLoaded", initializeDataTable); 
 
 function formLogin(e){
     e.preventDefault();
@@ -38,13 +49,20 @@ function formLogin(e){
         http.send(new FormData(form)); 
         http.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
-                const res = JSON.parse(this.responseText);
-                if(res == "ok"){
-                    window.location = base_url + "Usuarios";
-                }
-                else{
+                try {
+                    const res = JSON.parse(this.responseText);
+                    if(res == "ok"){
+                        window.location = base_url + "Usuarios";
+                    }
+                    else{
+                        document.getElementById("alerta").classList.remove("d-none");
+                        document.getElementById("alerta").innerHTML = res || "Credenciales incorrectas";
+                    }
+                } catch (e) {
+                    // If response is not JSON, show the HTML error
                     document.getElementById("alerta").classList.remove("d-none");
-                    //document.getElementById("alerta").innerHTML = res;
+                    document.getElementById("alerta").innerHTML = "Error en el servidor: " + this.responseText;
+                    console.error("Server response:", this.responseText);
                 }
             }
         }

@@ -33,10 +33,10 @@
 
         public function validar(){
             if(empty($_POST['usuario']) || empty($_POST['password'])){
-                echo "No se ingresaron datos";
+                $msg = "No se ingresaron datos";
             }
             else{
-                $data=$this->model->getUsuarios($_POST['usuario'],$_POST['password']);
+                $data=$this->model->getUsuario($_POST['usuario'],$_POST['password']);
                 if($data){
                     $_SESSION['id']=$data['id'];
                     $_SESSION['usuario']=$data['usuario'];
@@ -44,7 +44,7 @@
                     $msg="ok";
                 }
                 else{
-                    $msg="error";
+                    $msg="Usuario o contraseña incorrectos";
                 }
             }
             echo json_encode($msg,JSON_UNESCAPED_UNICODE);
